@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" rel="stylesheet"/>
+    
+</head>
+    
+<body>
+    <h1>Hệ thống theo dõi cảnh báo lũ sớm trên sông</h1>
+    <div id="chart"></div>
+    
+    <script>
+    $.ajax({
+      url: "data.php", //dummy server
+      method: "GET", //dummy server requires GET not POST
+      datatype: "json",
+      success: function(data) {
+        Morris.Line({
+          element: 'chart',
+          data: data,
+          xkey: 'time_act',
+          ykeys: ['value'],
+          labels: ['Level'],
+          ymax: 300,
+          ymin: 0,
+          xLabels: 'day',
+          xLabelAngle: 45,
+          xLabelFormat: function (d) {
+            var weekdays = new Array(7);
+            weekdays[0] = "SUN";
+            weekdays[1] = "MON";
+            weekdays[2] = "TUE";
+            weekdays[3] = "WED";
+            weekdays[4] = "THU";
+            weekdays[5] = "FRI";
+            weekdays[6] = "SAT";
+        
+            return weekdays[d.getDay()] + '-' + 
+                   ("0" + (d.getMonth() + 1)).slice(-2) + '-' + 
+                   ("0" + (d.getDate())).slice(-2);
+          },
+          resize: true
+        });
+      }
+    });
+    </script>
+   
+</body>
+</html>
